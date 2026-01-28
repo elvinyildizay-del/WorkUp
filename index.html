@@ -2,55 +2,101 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <title>Planlı Günüm | Necip Fazıl Kısakürek Fen Lisesi – Şanlıurfa</title>
-
-  <meta name="description" content="Şanlıurfa’daki Necip Fazıl Kısakürek Fen Lisesi öğrencileri tarafından geliştirilen, günlük planlama ve çalışma süresi takibi yapmayı amaçlayan okul projesi.">
-  <meta name="keywords" content="planlı günüm, çalışma takibi, ders programı, kronometre, fen lisesi, şanlıurfa, okul projesi">
-  <meta name="author" content="Necip Fazıl Kısakürek Fen Lisesi Öğrencileri">
-
+  <title>WorkUp</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <h1>📌 Planlı Günüm</h1>
-  <p id="date"></p>
+<header class="topbar">
 
-  <div class="motivation-box">
-    <p id="motivationText"></p>
+  <!-- SOL: SEKME BUTONLARI -->
+  <div class="tabs">
+    <button class="tab-button active" data-tab="home">Ana Sayfa</button>
+    <button class="tab-button" data-tab="week">Haftalık Plan</button>
+    <button class="tab-button" data-tab="timer">Kronometre</button>
+    <button class="tab-button" data-tab="net">Net Hesaplama</button>
   </div>
 
-  <div class="todo-box">
-    <input type="text" id="taskInput" placeholder="Bugün ne yapacaksın?">
-    <button onclick="addTask()">Ekle</button>
+  <!-- SAĞ: LOGO + İSİM + PROFİL -->
+  <div class="header-right">
+    <div class="brand">
+  <img src="images/logo.jpeg" class="logo" alt="WorkUp Logo">
+  <span class="brand-name">WorkUp</span>
+</div>
 
-    <h2>📝 Yapılacaklar</h2>
-    <ul id="taskList"></ul>
+</header>
 
-    <h2>✅ Tamamlananlar</h2>
-    <ul id="doneList"></ul>
+<!-- ANA SAYFA -->
+<section id="home" class="tab-content active">
+  <h1>Bugünün Planı</h1>
+  <p id="today-date"></p>
+
+  <div class="motivation-box" id="motivation"></div>
+</section>
+
+<!-- HAFTALIK PLAN -->
+<section id="week" class="tab-content">
+  <h1>Haftalık Plan</h1>
+
+  <table id="weeklyTable">
+    <thead>
+      <tr>
+        <th>Ders</th>
+        <th>Pazartesi</th>
+        <th>Salı</th>
+        <th>Çarşamba</th>
+        <th>Perşembe</th>
+        <th>Cuma</th>
+        <th>Cumartesi</th>
+        <th>Pazar</th>
+        <th>Sil</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <button id="addRowBtn">+ Ders Ekle</button>
+</section>
+
+<!-- KRONOMETRE -->
+<section id="timer" class="tab-content">
+  <h1>Kronometre</h1>
+  <div id="timer-display">00:00</div>
+  <button onclick="startTimer()">Başlat</button>
+  <button onclick="stopTimer()">Durdur</button>
+  <button onclick="resetTimer()">Sıfırla</button>
+</section>
+
+<!-- NET HESAPLAMA -->
+  <div id="net" class="tab-content">
+  <h1>Net Hesaplama</h1>
+
+  <div class="net-box">
+    <h3>LGS</h3>
+    Doğru <input type="number" id="lgs-correct" value="0">
+    Yanlış <input type="number" id="lgs-wrong" value="0">
+    <button onclick="calcNet('lgs')">Hesapla</button>
+    <div id="lgs-result"></div>
   </div>
 
-  <div class="timer-box">
-    <h2>⏱️ Çalışma Kronometresi</h2>
-    <p id="timer">00:00:00</p>
-    <button onclick="startTimer()">Başlat</button>
-    <button onclick="stopTimer()">Mola</button>
-    <button onclick="resetTimer()">Sıfırla</button>
+  <div class="net-box">
+    <h3>TYT</h3>
+    Doğru <input type="number" id="tyt-correct" value="0">
+    Yanlış <input type="number" id="tyt-wrong" value="0">
+    <button onclick="calcNet('tyt')">Hesapla</button>
+    <div id="tyt-result"></div>
   </div>
 
-  <div class="week-box">
-    <h2>📅 Haftalık Çalışma Süresi</h2>
-    <ul id="weekList"></ul>
+  <div class="net-box">
+    <h3>AYT</h3>
+    Doğru <input type="number" id="ayt-correct" value="0">
+    Yanlış <input type="number" id="ayt-wrong" value="0">
+    <button onclick="calcNet('ayt')">Hesapla</button>
+    <div id="ayt-result"></div>
   </div>
+</div>
 
-  <div class="mood-box">
-    <p>Günün nasıldı?</p>
-    <button onclick="setMood('🌟 Mükemmel geçti')">🌟</button>
-    <button onclick="setMood('🙂 Ortalama')">🙂</button>
-    <button onclick="setMood('😞 Kötü')">😞</button>
-    <p id="moodResult"></p>
-  </div>
-
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
