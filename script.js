@@ -1,17 +1,22 @@
-// ===== TARİH =====
-const dateEl = document.getElementById("date");
-const today = new Date();
-dateEl.innerText = today.toLocaleDateString("tr-TR", {
-  day: "numeric",
-  month: "long",
-  year: "numeric",
-  weekday: "long"
+/* SEKME GEÇİŞİ */
+document.querySelectorAll(".tab-button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab-button").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+
+    btn.classList.add("active");
+    document.getElementById(btn.dataset.tab).classList.add("active");
+  });
 });
 
-// ===== MOTİVASYON CÜMLELERİ =====
-const motivasyonlar = [
+/* TARİH */
+const today = new Date();
+document.getElementById("today-date").innerText =
+  today.toLocaleDateString("tr-TR", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
+
+/* MOTİVASYON */
+const quotes = [
   "Bugün zorlanıyorsan, yarın anlatacak bir hikâyen olacak.",
-  "Kimsenin görmediği anlarda çalışırsan, herkesin konuştuğu biri olursun.",
   "Başarı sabah erken kalkmayı sever.",
   "Bahaneler rahatlatır, emek kazandırır.",
   "Yorulmak bırakmak için değil, güçlendiğini anlamak içindir.",
@@ -24,83 +29,59 @@ const motivasyonlar = [
   "Başarı bir anda gelmez, her gün inşa edilir.",
   "Şu an zor geliyorsa doğru yoldasın.",
   "Kimse inanmazken kendine sadık kal.",
-  "Bugün sabret, yarın seçen ol.",
   "Çalışmak sıkıcı olabilir ama pişmanlık daha beterdir.",
   "Hedefin büyükse fedakârlık da büyük olur.",
   "Yoruldun diye durma, durursan unutulursun.",
   "Kendinle yarıştığında hep kazanırsın.",
-  "Başarı cesareti sever ama disiplini ödüllendirir."
+  "WorkUp zamanı."
 ];
+document.getElementById("motivation").innerText =
+  quotes[Math.floor(Math.random() * quotes.length)];
 
-// Random motivasyon göster
-document.getElementById("motivationText").innerText =
-  motivasyonlar[Math.floor(Math.random() * motivasyonlar.length)];
+/* HAFTALIK PLAN */
+const tableBody = document.querySelector("#weeklyTable tbody");
+document.getElementById("addRowBtn").onclick = () => {
+  const row = document.createElement("tr");
+  row.innerHTML = `
+    <td contenteditable>Ders</td>
+    <td contenteditable></td>
+    <td contenteditable></td>
+    <td contenteditable></td>
+    <td contenteditable></td>
+    <td contenteditable></td>
+    <td contenteditable></td>
+    <td contenteditable></td>
+    <td class="delete">❌</td>
+  `;
+  row.querySelector(".delete").onclick = () => row.remove();
+  tableBody.appendChild(row);
+};
 
-// ===== YAPILACAKLAR =====
-function addTask() {
-  const input = document.getElementById("taskInput");
-  if (!input.value) return;
-
-  const li = document.createElement("li");
-  li.innerText = input.value;
-
-  // Tamamlananlar için tıklama
-  li.onclick = () => {
-    document.getElementById("doneList").appendChild(li);
-  };
-
-  document.getElementById("taskList").appendChild(li);
-  input.value = "";
-}
-
-// ===== KRONOMETRE =====
-let seconds = 0;
-let timer;
-
+/* KRONOMETRE */
+let time = 0, timer;
 function startTimer() {
   if (timer) return;
   timer = setInterval(() => {
-    seconds++;
-    updateTimer();
+    time++;
+    document.getElementById("timer-display").innerText =
+      String(Math.floor(time / 60)).padStart(2, "0") + ":" + String(time % 60).padStart(2, "0");
   }, 1000);
 }
-
 function stopTimer() {
   clearInterval(timer);
   timer = null;
 }
-
 function resetTimer() {
   stopTimer();
-  seconds = 0;
-  updateTimer();
+  time = 0;
+  document.getElementById("timer-display").innerText = "00:00";
 }
 
-function updateTimer() {
-  const h = String(Math.floor(seconds / 3600)).padStart(2, "0");
-  const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
-  const s = String(seconds % 60).padStart(2, "0");
-  document.getElementById("timer").innerText = `${h}:${m}:${s}`;
-}
-
-// ===== MOOD / GÜNÜN NASILDI =====
-function setMood(text) {
-  document.getElementById("moodResult").innerText = text;
-}
-
-// ===== HAFTALIK ÇİZELGE =====
-// Basit örnek, her görevi ekleyince hafta gününe ekleme yapabilirsiniz
-const weekList = document.getElementById("weekList");
-const weekdays = ["Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar"];
-weekdays.forEach(day => {
-  const li = document.createElement("li");
-  li.innerText = `${day}: 0 dk`;
-  weekList.appendChild(li);
-});
-
-// Günlük çalışma süresi ekleme (kronometre bitince)
-function addToWeek(dayIndex, minutes) {
-  const li = weekList.children[dayIndex];
-  const current = parseInt(li.innerText.split(": ")[1]);
-  li.innerText = `${weekdays[dayIndex]}: ${current + minutes} dk`;
+/* NET */
+function calcNet(type) {
+  const correct = document.getElementById(`${type}-correct`).value;
+  const wrong = document.getElementById(`${type}-wrong`).value;
+  const net = correct - wrong / 4;
+  document.getElementById(`${type}-result`).textContent =
+    "Net: " + net.toFixed(2);
 }
