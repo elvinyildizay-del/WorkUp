@@ -54,8 +54,8 @@ body {
 }
 
 .logo-wrap {
-  width: 80px;
-  height: 80px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   overflow: hidden;   /* 🔥 sihir burada */
   border: 2px solid #6a5cff;
